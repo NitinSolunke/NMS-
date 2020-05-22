@@ -1,0 +1,30 @@
+{
+    "baseUrl": "http://localhost:8000/",
+    "company": "company",
+    "assetType":"assetType",
+    "supplier":"supplier",
+    "asset":"asset",
+    "DeleteAssetById":"asset/ById",
+    "assetContent":"asset/content/",
+    "assetFilter":"asset/filter",
+    "users":"users",
+    "changeStatus":"AssignAssetUpdate/ById",
+    "AssetUpdate":"AssetUpdate/ById",
+    "userAsset":"userAsset/content",
+
+    "companyContent":"company/content/",
+    "supplierContent":"supplier/content/",
+
+
+    "userContent":"user/content/",
+    "user":"user",
+    "DeleteUserById":"user/ById",
+    "userUpdate":"user/update",
+    
+
+    "getUserAsset":"userAsset",
+    "DeleteUserAssetById":"userAsset/ById"
+
+
+
+}

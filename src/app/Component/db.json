@@ -1,0 +1,118 @@
+{
+  "Assets": [
+    {
+      "id": 1,
+      "company": "HP",
+      "supplier": "Sanket Mishra",
+      "tagNumber": "LXN001",
+      "model": "dell6786Ax",
+      "purchaseCost": "35000",
+      "warranty": 24,
+      "assetType": "Laptop",
+      "serialNumber": "dell67#654",
+      "configuration": "12GB RAM",
+      "status": "pending",
+      "description": "Damaged"
+    },
+    {
+      "company": "HP",
+      "supplier": "Pavan Patil",
+      "tagNumber": "Rnt002",
+      "model": "Applgj",
+      "purchaseCost": "3446645",
+      "warranty": "21",
+      "assetType": "lpa",
+      "serialNumber": "4543rdrgdg",
+      "configuration": "12gb",
+      "id": 2,
+      "status": "pending"
+    },
+    {
+      "company": "Apple",
+      "supplier": "Pavan Patil",
+      "tagNumber": "RNT004",
+      "model": "Apple@02",
+      "purchaseCost": "200000",
+      "warranty": "24",
+      "assetType": "Laptop",
+      "serialNumber": "Apple$2345",
+      "configuration": "36gb ram",
+      "id": 3,
+      "status": "pending"
+    },
+    {
+      "id": 4,
+      "company": "Apple",
+      "supplier": "Pavan Patil",
+      "tagNumber": "RNT005",
+      "model": "Apple45",
+      "purchaseCost": "10000",
+      "warranty": "24",
+      "assetType": "Tablet",
+      "serialNumber": "Tablet#345",
+      "configuration": "24Gb RAM",
+      "status": "pending"
+    },
+    {
+      "company": "Apple",
+      "supplier": "Sanket Mishra",
+      "tagNumber": "RNT006",
+      "model": "AP",
+      "purchaseCost": "300000",
+      "warranty": "12",
+      "assetType": "Laptop",
+      "serialNumber": "Appll@3434",
+      "configuration": "24gb",
+      "id": 5,
+      "status": "deployed"
+    },
+    {
+      "id": 6,
+      "company": "HP",
+      "supplier": "Sanket Mishra",
+      "tagNumber": "s",
+      "model": "s",
+      "purchaseCost": "s1",
+      "warranty": "23",
+      "assetType": "s",
+      "serialNumber": "s",
+      "configuration": "s",
+      "status": "pending"
+    },
+    {
+      "id": 7,
+      "company": "HP",
+      "supplier": "Sanket Mishra",
+      "tagNumber": "tryty",
+      "model": "tryutr",
+      "purchaseCost": "54645",
+      "warranty": "65",
+      "assetType": "tut",
+      "serialNumber": "tuytu",
+      "configuration": "tyuytu",
+      "status": "pending"
+    }
+  ],
+  "Comapny": [
+    {
+      "id": 1,
+      "companyName": "HP",
+      "companyLocation": "USA"
+    },
+    {
+      "id": 2,
+      "companyName": "Dell",
+      "companyLocation": "USA"
+    },
+    {
+      "id": 3,
+      "companyName": "Apple",
+      "companyLocation": "USA"
+    },
+    {
+      "id": 4,
+      "companyName": "Asus",
+      "companyLocation": "USA"
+    }
+  ]
+}

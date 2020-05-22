@@ -1,0 +1,380 @@
+<div class="container-fluid">
+    <div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Asset List</h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+            <button class="btn btn-danger pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light" (click)="showPopUp()">Create
+
+            </button>
+            
+            <ol class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                <li class="active">Assets List</li>
+            </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /row -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="white-box">
+                <!-- <h3 class="box-title">Assets List</h3> -->
+                <!-- <p class="text-muted">Add class <code>.table</code></p> -->
+           
+                <div class="row">
+                  <div class="col-lg-3 col-3">
+                    <select class="form-control" name="search"  (change)="filterValue(f.value)" #f>
+                      <option value="All">All</option>
+                      <option value="deployed">Deployed</option>
+                      <option value="pending">Pending</option>
+                    </select>                
+                  </div>
+                  <div class="col-lg-3 col-3">
+                   <input type="text" class="form-control" placeholder="Search" name="Search" [(ngModel)]="searchText">              
+                   </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th (click)="sortData('id','num')">Sr.No</th>
+                                <th (click)="sortData('asset','csstr')">AssetType</th>
+                                <th>SerialNumber</th>
+                                <th>TagNumber</th>
+                                <th>Company</th>
+                                <th>Configuration</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let contents of allContents | sort:sortConfig | filter:searchText | paginate: { currentPage: p , itemsPerPage: itemsPerPage};let i=index">
+                              <td>
+                                <i class="fa fa-pencil" (click)="getContentById(contents.id)"></i>&nbsp;&nbsp;
+                                <i class="glyphicon glyphicon-remove" (click)="deleteContent(contents.id)"></i>&nbsp;&nbsp;
+                                <i class="glyphicon glyphicon-eye-open" (click)="viewGetById(contents.id)"></i>
+
+                            </td>
+                            <!-- <td>{{i+1}}</td> -->
+                            <td>{{ itemsPerPage * (p - 1) + i + 1}}</td>
+                            <td>{{contents.assetTypeName}}</td>
+                                <td [innerHtml]="contents.serialNumber"></td>
+                                <td [innerText]="contents.tagNumber"></td>
+                                <td [textContent]="contents.companyName"></td>
+                                <td>{{contents.configuration}}</td>
+                                <td>
+                                  <button (click)="assignAsset(contents.id,contents.assetStatus)">{{contents.assetStatus}}</button>
+                                </td>                                
+                            </tr>                        
+                         </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right">
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+    <!-- /.row -->
+   
+</div>
+<!-- /.container-fluid -->
+
+
+
+<div class="modal" id="createReportModal" [class.in]="showPopUpValue" [class.show]="showPopUpValue">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header border">
+                <h3 class="modal-title" *ngIf="showSaveButton">Create Asset </h3>
+                <h3 class="modal-title" *ngIf="showupdateButton">Update Asset </h3>
+                <h3 class="modal-title" *ngIf="showAssignButton">Assign Asset </h3>
+
+
+                <!-- <img class="searchCloseBtn" data-dismiss="modal" (click)="hidereportAdd()" src="assets/images/Group 574.png"> -->
+            </div>
+
+            <!-- Modal body -->
+         
+        <div class="modal-body">
+              <div class="row">
+                <div class="col-lg-5 col-5">
+                  <label>Company Name</label>
+                  <ng-select  name="company" [(ngModel)]="AssetClass.companyId" [disabled]="disableField">
+                    <ng-option [value]="c.companyId" *ngFor="let c of company">{{c.companyName}}</ng-option>
+                  </ng-select>                 
+                </div>
+                <div class="col-lg-1 col-1">
+                  <label>_</label>
+                  <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="companyPopUp()">New</button>
+                </div> 
+                
+                <div class="col-lg-5 col-5">
+                  <label for="sel1">Supplier</label>
+                  <ng-select  name="supplier" [(ngModel)]="AssetClass.supplierId" [disabled]="disableField">
+                    <ng-option [value]="s.supplierId" *ngFor="let s of suppliers">{{s.supplierName}}</ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-lg-1 col-1">
+                  <label>_</label>
+                  <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="supplierPopUp()">New</button>
+                </div>
+              </div>  
+
+              <div class="row">
+                <div class="col-lg-6 col-6">
+                  <label>TagNumber</label>
+                 <input type="text" class="form-control"  name="tagNumber" [(ngModel)]="AssetClass.tagNumber" [disabled]="disableField">              
+                 </div>
+                <div class="col-lg-6 col-6">
+                  <label for="sel1">Model</label>
+                  <input type="text" class="form-control" name="model"  [(ngModel)]="AssetClass.model" [disabled]="disableField">       
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-lg-6 col-6">
+                  <label>PurchaseCost</label>
+                 <input type="text" class="form-control" name="purchaseCost" [(ngModel)]="AssetClass.purchaseCost" [disabled]="disableField">              
+                 </div>
+                <div class="col-lg-6 col-6">
+                  <label for="sel1">Warranty(In month)</label>
+                  <input type="text" class="form-control" name="warranty" [(ngModel)]="AssetClass.warranty" [disabled]="disableField">       
+                </div>
+              </div> 
+              <div class="row">
+                <div class="col-lg-6 col-6">
+                  <label>AssetType</label> 
+                  <ng-select  name="assetType" [(ngModel)]="AssetClass.assetTypeId" [disabled]="disableField">
+                    <ng-option  [value]="a.assetTypeId" *ngFor="let a of assetType">{{a.assetTypeName}}</ng-option>
+                  </ng-select>
+                </div>
+                <div class="col-lg-6 col-6">
+                  <label for="sel1">SerialNumber</label>
+                  <input type="text" class="form-control" name="serialNumber" [(ngModel)]="AssetClass.serialNumber" [disabled]="disableField">       
+                </div>
+              </div><br>
+              <div class="row" *ngIf="disableField">               
+                                
+                <div class="col-lg-6 col-6">
+                  <label>Condition</label>
+                  <ng-select  name="company" [(ngModel)]="AssetClass.assetCondition">
+                    <ng-option value="Working">Working</ng-option>
+                    <ng-option value="Not Working">Not Working</ng-option>
+                  </ng-select>                
+                </div>      
+                <div class="col-lg-6 col-6">
+                  <label for="sel1">AssignTo</label>
+                  <ng-select  name="user" [(ngModel)]="AssetClass.userId">
+                  <ng-option *ngFor="let u of users" value="{{u.userId}}" >{{u.firstName+' '+u.lastName +'('+ u.empCode+')'}}</ng-option>
+                  </ng-select>
+                </div>
+              </div> 
+              <div class="row">
+
+                <div class="col-lg-6 col-6">
+                  <label>Configuration</label>
+                 <input type="text" class="form-control" name="configuration" [(ngModel)]="AssetClass.configuration" [disabled]="disableField">              
+                </div>
+                 <div class="col-lg-6 col-6" *ngIf="disableField">
+                  <label>Description</label>
+                  <input type="text" class="form-control" name="description" [(ngModel)]="AssetClass.assetDescription">              
+                </div>
+                <br>
+                <div class="col-lg-6 col-6" *ngIf="!disableField">
+                  <label>Upload Asset Image</label>
+                 <input type="file">              
+                 </div> 
+              </div>
+              
+          </div>
+          <div class="modal-footer">
+            <button type="button" *ngIf="showSaveButton" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="saveContent()" >Save</button>
+            <button type="button" *ngIf="showupdateButton" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="updateContent()" >Update</button>
+            <button type="button" *ngIf="showAssignButton" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="SaveAssignAsset()" >Assign</button>
+
+            <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="closePopUp()">
+              Cancel
+            </button>
+          </div>
+
+            
+        </div>
+    </div>
+</div> 
+
+<div class="modal" id="createReportModal" [class.in]="showPopUpView" [class.show]="showPopUpView">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header border">
+              <h3 class="modal-title">View Asset </h3>
+              
+
+
+              <!-- <img class="searchCloseBtn" data-dismiss="modal" (click)="hidereportAdd()" src="assets/images/Group 574.png"> -->
+          </div>
+
+          <!-- Modal body -->
+       
+      <div class="modal-body">
+            
+        <div class="table-responsive">
+          <table class="table">               
+                  <tr>
+                    <th>AssetType:</th>
+                    <td>{{ViewContentById.assetTypeName}}</td>
+
+                  </tr>
+                  <tr>
+                    <th>SerialNumber:</th>
+                    <td>{{ViewContentById.serialNumber}}</td>
+
+                  </tr>
+                  <tr>
+                    <th>TagNumber:</th>
+                    <td>{{ViewContentById.tagNumber}}</td>
+                  </tr>
+                  <tr>
+                    <th>Company:</th>
+                    <td>{{ViewContentById.companyName}}</td>
+                  </tr>
+                  <tr>
+                    <th>Supplier:</th>
+                    <td>{{ViewContentById.supplierName}}</td>
+                  </tr>
+                  <tr>
+                    <th>Model:</th>
+                    <td>{{ViewContentById.model}}</td>
+                  </tr>
+                  <tr>
+                    <th>PurchaseCost:</th>
+                    <td>{{ViewContentById.purchaseCost}}</td>
+                  </tr>
+                  <tr>
+                    <th>Warranty:</th>
+                    <td>{{ViewContentById.warranty}}</td>
+                  </tr>
+                  <tr>
+                    <th>Configuration:</th>
+                    <td>{{ViewContentById.configuration}}</td>
+
+                  </tr>
+                  <tr>
+                    <th>Status:</th>
+                    <td>{{ViewContentById.assetStatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Description:</th>
+                    <td>{{ViewContentById.description}}</td>
+                  </tr>
+                  
+              
+          </table>
+      </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="closePopUp()">
+            Cancel
+          </button>
+        </div>
+
+          
+      </div>
+  </div>
+</div> 
+
+
+<!---------------------------------Company  Popup---------------------------------->
+
+<div class="modal" id="createReportModal" [class.in]="showCompanyPopUpValue" [class.show]="showCompanyPopUpValue">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header border">
+              <h3 class="modal-title" >Create Company </h3>
+          </div>       
+      <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                <label>Company Name:</label>
+                <input type="text"  name="company" [(ngModel)]="companyClass.companyName" class="form-control">                
+              </div>  
+              <div class="col-lg-6 col-6">
+                <label>Company Location:</label>
+                <input type="text"  name="companyLocation" [(ngModel)]="companyClass.companyLocation" class="form-control">                
+              </div>                
+            </div>  <br>
+            <div class="row">
+              <div class="col-lg-5 col-5">
+                <p *ngIf="showMessage" style="color: green;"><b>Company added successfully.....</b></p>         
+        </div>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="save()" >Save</button>
+          
+          <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="closeCompanyPopUp()">
+            Close
+          </button>
+        </div>
+
+          
+      </div>
+  </div>
+</div> 
+
+<!---------------------------------Supplier  Popup---------------------------------->
+
+<div class="modal" id="createReportModal" [class.in]="showSupplierPopUpValue" [class.show]="showSupplierPopUpValue">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          <div class="modal-header border">
+              <h3 class="modal-title" >Create Supplier </h3>
+          </div>       
+      <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                <label>Supplier Name:</label>
+                <input type="text"  name="SupplierName" [(ngModel)]="supplierClass.supplierName" class="form-control">                
+              </div>  
+              <div class="col-lg-6 col-6">
+                <label>Supplier Email:</label>
+                <input type="text"  name="SupplierLoc" [(ngModel)]="supplierClass.supplierEmail" class="form-control">                
+              </div>                
+            </div> <br>
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                <label>Supplier Address:</label>
+                <input type="text"  name="SupplierAddr" [(ngModel)]="supplierClass.supplierAddress" class="form-control">                
+              </div>  
+              <div class="col-lg-6 col-6">
+                <label>Supplier Phone:</label>
+                <input type="text"  name="supplierPhone" [(ngModel)]="supplierClass.supplierMobNum1" class="form-control">                
+              </div>                
+            </div> <br>
+            <div class="row">
+              <div class="col-lg-5 col-5">
+                <p *ngIf="showSupplierMessage" style="color: green;"><b>Supplier added successfully.....</b></p>         
+        </div>
+            </div>
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="saveSupplier()" >Save</button>
+          
+          <button type="button" class="btn" style="background-color: #A0A0A0;box-shadow: none;" (click)="closeSupplierPopUp()">
+            Close
+          </button>
+        </div>
+
+          
+      </div>
+  </div>
+</div>
